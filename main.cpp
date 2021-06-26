@@ -39,41 +39,41 @@ public:
     }};
     std::array<std::array<int, SIZE>, SIZE> board;
     std::vector<Point> next_valid_spots;
-    std::array<int, 3> disc_count;
+    std::array<int, 3> disc_count;  //dic_count[3]  紀錄white black empty數量
     int cur_player;
     bool done;
     int winner;
 private:
-    int get_next_player(int player) const {
+    int get_next_player(int player) const { //下一個player
         return 3 - player;
     }
-    bool is_spot_on_board(Point p) const {
+    bool is_spot_on_board(Point p) const { //點P在不再Board上
         return 0 <= p.x && p.x < SIZE && 0 <= p.y && p.y < SIZE;
     }
-    int get_disc(Point p) const {
+    int get_disc(Point p) const { //哪種disc在p點
         return board[p.x][p.y];
     }
-    void set_disc(Point p, int disc) {
+    void set_disc(Point p, int disc) { //set disc 在 P點
         board[p.x][p.y] = disc;
     }
-    bool is_disc_at(Point p, int disc) const {
+    bool is_disc_at(Point p, int disc) const { //特定disc 在不在P點
         if (!is_spot_on_board(p))
             return false;
         if (get_disc(p) != disc)
             return false;
         return true;
     }
-    bool is_spot_valid(Point center) const {
+    bool is_spot_valid(Point center) const { //center點可不可以放
         if (get_disc(center) != EMPTY)
             return false;
         for (Point dir: directions) {
             // Move along the direction while testing.
             Point p = center + dir;
-            if (!is_disc_at(p, get_next_player(cur_player)))
+            if (!is_disc_at(p, get_next_player(cur_player)))  //如果沒有dir+center的點為對手的旗子 continue
                 continue;
             p = p + dir;
-            while (is_spot_on_board(p) && get_disc(p) != EMPTY) {
-                if (is_disc_at(p, cur_player))
+            while (is_spot_on_board(p) && get_disc(p) != EMPTY) { //同直線上的不為空 且不是自己的旗子 就持續運行
+                if (is_disc_at(p, cur_player)) //若有自己的旗子->有效的下棋點
                     return true;
                 p = p + dir;
             }
@@ -84,12 +84,12 @@ private:
         for (Point dir: directions) {
             // Move along the direction while testing.
             Point p = center + dir;
-            if (!is_disc_at(p, get_next_player(cur_player)))
+            if (!is_disc_at(p, get_next_player(cur_player))) //若非相反顏色的旗子 換一個dir
                 continue;
-            std::vector<Point> discs({p});
+            std::vector<Point> discs({p}); //放要翻轉的東西
             p = p + dir;
             while (is_spot_on_board(p) && get_disc(p) != EMPTY) {
-                if (is_disc_at(p, cur_player)) {
+                if (is_disc_at(p, cur_player)) { //遇到跟自己同色的旗子，反轉discs中Point 的旗子並退出
                     for (Point s: discs) {
                         set_disc(s, cur_player);
                     }
@@ -97,7 +97,7 @@ private:
                     disc_count[get_next_player(cur_player)] -= discs.size();
                     break;
                 }
-                discs.push_back(p);
+                discs.push_back(p); //遇到和自己相反的旗子 ， 放到discs裡
                 p = p + dir;
             }
         }
@@ -114,7 +114,7 @@ public:
         }
         board[3][4] = board[4][3] = BLACK;
         board[3][3] = board[4][4] = WHITE;
-        cur_player = BLACK;
+        cur_player = BLACK; //玩家黑旗
         disc_count[EMPTY] = 8*8-4;
         disc_count[BLACK] = 2;
         disc_count[WHITE] = 2;
@@ -122,7 +122,7 @@ public:
         done = false;
         winner = -1;
     }
-    std::vector<Point> get_valid_spots() const {
+    std::vector<Point> get_valid_spots() const { //掃描整個board每個位置有不有效
         std::vector<Point> valid_spots;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -136,7 +136,7 @@ public:
         return valid_spots;
     }
     bool put_disc(Point p) {
-        if(!is_spot_valid(p)) {
+        if(!is_spot_valid(p)) { //蛤
             winner = get_next_player(cur_player);
             done = true;
             return false;
