@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+int player;
+const int SIZE = 8;
 ///////////////////////////////////////////////////////////
 struct Point {
     int x, y;
@@ -140,13 +142,14 @@ public:
 
     // factor in the amount of moves each player has
     cur_player = 1;
-    b_total += get_valid_spots().size();
+    b_total += get_valid_spots().size()*3;
+
     cur_player = 2;
-    w_total += get_valid_spots().size();
+    w_total += get_valid_spots().size()*3;
 
     // factor in the amount of pieces each player has on the board
-    b_total += getscore(1);
-    w_total += getscore(2);
+    b_total += getscore(1)*5;
+    w_total += getscore(2)*5;
 
     // factor in the importance of all 4 corners
     if(board[0][0] == 2){
@@ -174,7 +177,8 @@ public:
         b_total += 10;
     }
     // subtract white's total from black, let black be the maximizer
-    return (b_total-w_total);
+    if(player==1) return (b_total-w_total);
+    else return (w_total-b_total);
 }
 ////////////////////////////////////////////////////////
     std::vector<Point> get_valid_spots() const { //掃描整個board每個位置有不有效
@@ -330,11 +334,9 @@ int minimax(int depth, OthelloBoard& board, int alpha, int beta)
 }
 ////////////////////////////////////////////////////////////////////
 
-
-int player;
-const int SIZE = 8;
 std::array<std::array<int, SIZE>, SIZE> board;
 std::vector<Point> next_valid_spots;
+
 
 void read_board(std::ifstream& fin) {
     fin >> player;
@@ -395,4 +397,3 @@ int main(int, char** argv) {
     fout.close();
     return 0;
 }
-
