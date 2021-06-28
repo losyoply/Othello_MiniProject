@@ -153,29 +153,30 @@ public:
 
     // factor in the importance of all 4 corners
     if(board[0][0] == 2){
-        w_total += 10;
+        w_total += 20;
     }
     if(board[0][0] == 1){
-        b_total += 10;
+        b_total += 20;
     }
     if(board[7][0] == 2){
-        w_total += 10;
+        w_total += 20;
     }
     if(board[7][0] == 1){
-        b_total += 10;
+        b_total += 20;
     }
     if(board[0][7] == 2){
-        w_total += 10;
+        w_total += 20;
     }
     if(board[0][7] == 1){
-        b_total += 10;
+        b_total += 20;
     }
     if(board[7][7] == 2){
-        w_total += 10;
+        w_total += 20;
     }
     if(board[7][7] == 1){
-        b_total += 10;
+        b_total += 20;
     }
+    //if(board[0][1]==)
     // subtract white's total from black, let black be the maximizer
     if(player==1) return (b_total-w_total);
     else return (w_total-b_total);
@@ -364,7 +365,7 @@ void write_valid_spot(std::ofstream& fout) {
     Board.cur_player = player;
     for(int i = 0;i<8;i++) for(int j = 0;j<8;j++) Board.board[i][j] = board[i][j];
     Point best_point;
-    int ans = -100;
+    int ans = -9999999;
     std::vector<Point>::iterator it;
     int alpha = -9999999, beta =  9999999;
     for(it = next_valid_spots.begin();it!=next_valid_spots.end();it++)
@@ -383,6 +384,7 @@ void write_valid_spot(std::ofstream& fout) {
             alpha = m;
         }
     }
+    //if(next_valid_spots)
     fout<<best_point.x<<" "<<best_point.y<<std::endl;
     fout.flush();
 }
