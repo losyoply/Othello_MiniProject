@@ -153,28 +153,28 @@ public:
 
     // factor in the importance of all 4 corners
     if(board[0][0] == 2){
-        w_total += 40;
+        w_total += 50;
     }
     if(board[0][0] == 1){
-        b_total += 40;
+        b_total += 50;
     }
     if(board[7][0] == 2){
-        w_total += 40;
+        w_total += 50;
     }
     if(board[7][0] == 1){
-        b_total += 40;
+        b_total += 50;
     }
     if(board[0][7] == 2){
-        w_total += 40;
+        w_total += 50;
     }
     if(board[0][7] == 1){
-        b_total += 40;
+        b_total += 50;
     }
     if(board[7][7] == 2){
-        w_total += 40;
+        w_total += 50;
     }
     if(board[7][7] == 1){
-        b_total += 40;
+        b_total += 50;
     }
     //
     if(board[2][2]==1) b_total +=4;
@@ -237,18 +237,31 @@ public:
     if(board[4][7]==2) w_total +=6;
     if(board[5][7]==2) w_total +=8;
 
-    if(board[0][1]==1) b_total -=15;
-    if(board[1][1]==1) b_total -=15;
-    if(board[1][0]==1) b_total -=15;
-    if(board[6][0]==1) b_total -=15;
-    if(board[6][1]==1) b_total -=15;
-    if(board[7][1]==1) b_total -=15;
-    if(board[0][6]==1) b_total -=15;
-    if(board[1][6]==1) b_total -=15;
-    if(board[1][7]==1) b_total -=15;
-    if(board[6][6]==1) b_total -=15;
-    if(board[6][7]==1) b_total -=15;
-    if(board[7][6]==1) b_total -=15;
+    if(board[0][1]==1&&board[0][0]!=1) b_total -=20;
+    if(board[1][1]==1&&board[0][0]!=1) b_total -=20;
+    if(board[1][0]==1&&board[0][0]!=1) b_total -=20;
+    if(board[6][0]==1&&board[7][0]!=1) b_total -=20;
+    if(board[6][1]==1&&board[7][0]!=1) b_total -=20;
+    if(board[7][1]==1&&board[7][0]!=1) b_total -=20;
+    if(board[0][6]==1&&board[7][7]!=1) b_total -=20;
+    if(board[1][6]==1&&board[7][7]!=1) b_total -=20;
+    if(board[1][7]==1&&board[7][7]!=1) b_total -=20;
+    if(board[6][6]==1&&board[7][7]!=1) b_total -=20;
+    if(board[6][7]==1&&board[7][7]!=1) b_total -=20;
+    if(board[7][6]==1&&board[7][7]!=1) b_total -=20;
+
+    if(board[0][1]==2&&board[0][0]!=2) w_total -=20;
+    if(board[1][1]==2&&board[0][0]!=2) w_total -=20;
+    if(board[1][0]==2&&board[0][0]!=2) w_total -=20;
+    if(board[6][0]==2&&board[7][0]!=2) w_total -=20;
+    if(board[6][1]==2&&board[7][0]!=2) w_total -=20;
+    if(board[7][1]==2&&board[7][0]!=2) w_total -=20;
+    if(board[0][6]==2&&board[7][7]!=2) w_total -=20;
+    if(board[1][6]==2&&board[7][7]!=2) w_total -=20;
+    if(board[1][7]==2&&board[7][7]!=2) w_total -=20;
+    if(board[6][6]==2&&board[7][7]!=2) w_total -=20;
+    if(board[6][7]==2&&board[7][7]!=2) w_total -=20;
+    if(board[7][6]==2&&board[7][7]!=2) w_total -=20;
     // subtract white's total from black, let black be the maximizer
     if(player==1) return (b_total-w_total);
     else return (w_total-b_total);
