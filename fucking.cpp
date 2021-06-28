@@ -153,30 +153,102 @@ public:
 
     // factor in the importance of all 4 corners
     if(board[0][0] == 2){
-        w_total += 20;
+        w_total += 40;
     }
     if(board[0][0] == 1){
-        b_total += 20;
+        b_total += 40;
     }
     if(board[7][0] == 2){
-        w_total += 20;
+        w_total += 40;
     }
     if(board[7][0] == 1){
-        b_total += 20;
+        b_total += 40;
     }
     if(board[0][7] == 2){
-        w_total += 20;
+        w_total += 40;
     }
     if(board[0][7] == 1){
-        b_total += 20;
+        b_total += 40;
     }
     if(board[7][7] == 2){
-        w_total += 20;
+        w_total += 40;
     }
     if(board[7][7] == 1){
-        b_total += 20;
+        b_total += 40;
     }
-    //if(board[0][1]==)
+    //
+    if(board[2][2]==1) b_total +=4;
+    if(board[2][3]==1) b_total +=4;
+    if(board[2][4]==1) b_total +=4;
+    if(board[2][5]==1) b_total +=4;
+    if(board[3][2]==1) b_total +=4;
+    if(board[3][5]==1) b_total +=4;
+    if(board[4][2]==1) b_total +=4;
+    if(board[4][5]==1) b_total +=4;
+    if(board[5][2]==1) b_total +=4;
+    if(board[5][3]==1) b_total +=4;
+    if(board[5][4]==1) b_total +=4;
+    if(board[5][5]==1) b_total +=4;
+
+    if(board[2][2]==2) w_total +=4;
+    if(board[2][3]==2) w_total +=4;
+    if(board[2][4]==2) w_total +=4;
+    if(board[2][5]==2) w_total +=4;
+    if(board[3][2]==2) w_total +=4;
+    if(board[3][5]==2) w_total +=4;
+    if(board[4][2]==2) w_total +=4;
+    if(board[4][5]==2) w_total +=4;
+    if(board[5][2]==2) w_total +=4;
+    if(board[5][3]==2) w_total +=4;
+    if(board[5][4]==2) w_total +=4;
+    if(board[5][5]==2) w_total +=4;
+
+    if(board[0][2]==1) b_total +=8;
+    if(board[0][3]==1) b_total +=6;
+    if(board[0][4]==1) b_total +=6;
+    if(board[0][5]==1) b_total +=8;
+    if(board[7][2]==1) b_total +=8;
+    if(board[7][3]==1) b_total +=6;
+    if(board[7][4]==1) b_total +=6;
+    if(board[7][5]==1) b_total +=8;
+    if(board[2][7]==1) b_total +=8;
+    if(board[3][7]==1) b_total +=6;
+    if(board[4][7]==1) b_total +=6;
+    if(board[5][7]==1) b_total +=8;
+    if(board[2][7]==1) b_total +=8;
+    if(board[3][7]==1) b_total +=6;
+    if(board[4][7]==1) b_total +=6;
+    if(board[5][7]==1) b_total +=8;
+
+    if(board[0][2]==2) w_total +=8;
+    if(board[0][3]==2) w_total +=6;
+    if(board[0][4]==2) w_total +=6;
+    if(board[0][5]==2) w_total +=8;
+    if(board[7][2]==2) w_total +=8;
+    if(board[7][3]==2) w_total +=6;
+    if(board[7][4]==2) w_total +=6;
+    if(board[7][5]==2) w_total +=8;
+    if(board[2][7]==2) w_total +=8;
+    if(board[3][7]==2) w_total +=6;
+    if(board[4][7]==2) w_total +=6;
+    if(board[5][7]==2) w_total +=8;
+    if(board[2][7]==2) w_total +=8;
+    if(board[3][7]==2) w_total +=6;
+    if(board[4][7]==2) w_total +=6;
+    if(board[5][7]==2) w_total +=8;
+
+    if(board[0][1]==1) b_total -=15;
+    if(board[1][1]==1) b_total -=15;
+    if(board[1][0]==1) b_total -=15;
+    if(board[6][0]==1) b_total -=15;
+    if(board[6][1]==1) b_total -=15;
+    if(board[7][1]==1) b_total -=15;
+    if(board[0][6]==1) b_total -=15;
+    if(board[1][6]==1) b_total -=15;
+    if(board[1][7]==1) b_total -=15;
+    if(board[6][6]==1) b_total -=15;
+    if(board[6][7]==1) b_total -=15;
+    if(board[7][6]==1) b_total -=15;
     // subtract white's total from black, let black be the maximizer
     if(player==1) return (b_total-w_total);
     else return (w_total-b_total);
@@ -289,7 +361,7 @@ public:
 };
 int minimax(int depth, OthelloBoard& board, int alpha, int beta)
 {
-    if(depth >=5 || board.done==true)
+    if(depth >=6 || board.done==true)
     {
         return board.heuristic();
     }
@@ -365,9 +437,9 @@ void write_valid_spot(std::ofstream& fout) {
     Board.cur_player = player;
     for(int i = 0;i<8;i++) for(int j = 0;j<8;j++) Board.board[i][j] = board[i][j];
     Point best_point;
-    int ans = -9999999;
+    int ans = -999999999;
     std::vector<Point>::iterator it;
-    int alpha = -9999999, beta =  9999999;
+    int alpha = -999999999, beta =  999999999;
     for(it = next_valid_spots.begin();it!=next_valid_spots.end();it++)
     {
         OthelloBoard next_board = Board;
