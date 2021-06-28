@@ -125,7 +125,7 @@ public:
         winner = -1;
     }
     /////////////////////////////////////////////////////////
-    int getscore(int playguy)
+    int getscore(int playguy) //how much disks of playguy have
     {
         int total = 0;
         for(int i = 0; i < SIZE; ++i)
@@ -134,24 +134,24 @@ public:
                     total += 1;
         return total;
     }
-    int heuristic(){
+    int heuristic()  //ok
+    {
 
     // intialize black and white total
     int b_total = 0;
     int w_total = 0;
 
-    // factor in the amount of moves each player has
+    //how much valid moves this board have (black and white)
     cur_player = 1;
     b_total += get_valid_spots().size()*3;
-
     cur_player = 2;
     w_total += get_valid_spots().size()*3;
 
-    // factor in the amount of pieces each player has on the board
+    //number of disks
     b_total += getscore(1)*5;
     w_total += getscore(2)*5;
 
-    // factor in the importance of all 4 corners
+    //points in four corners is good
     if(board[0][0] == 2){
         w_total += 50;
     }
@@ -176,7 +176,7 @@ public:
     if(board[7][7] == 1){
         b_total += 50;
     }
-    //
+    //甤ず翴
     if(board[2][2]==1) b_total +=4;
     if(board[2][3]==1) b_total +=4;
     if(board[2][4]==1) b_total +=4;
@@ -189,7 +189,7 @@ public:
     if(board[5][3]==1) b_total +=4;
     if(board[5][4]==1) b_total +=4;
     if(board[5][5]==1) b_total +=4;
-
+    //甤ず翴
     if(board[2][2]==2) w_total +=4;
     if(board[2][3]==2) w_total +=4;
     if(board[2][4]==2) w_total +=4;
@@ -202,7 +202,7 @@ public:
     if(board[5][3]==2) w_total +=4;
     if(board[5][4]==2) w_total +=4;
     if(board[5][5]==2) w_total +=4;
-
+    //娩
     if(board[0][2]==1) b_total +=8;
     if(board[0][3]==1) b_total +=6;
     if(board[0][4]==1) b_total +=6;
@@ -219,7 +219,7 @@ public:
     if(board[3][7]==1) b_total +=6;
     if(board[4][7]==1) b_total +=6;
     if(board[5][7]==1) b_total +=8;
-
+    //娩
     if(board[0][2]==2) w_total +=8;
     if(board[0][3]==2) w_total +=6;
     if(board[0][4]==2) w_total +=6;
@@ -236,7 +236,7 @@ public:
     if(board[3][7]==2) w_total +=6;
     if(board[4][7]==2) w_total +=6;
     if(board[5][7]==2) w_total +=8;
-
+    ////points around à is bad if you didnt get à yet
     if(board[0][1]==1&&board[0][0]!=1) b_total -=20;
     if(board[1][1]==1&&board[0][0]!=1) b_total -=20;
     if(board[1][0]==1&&board[0][0]!=1) b_total -=20;
@@ -249,7 +249,7 @@ public:
     if(board[6][6]==1&&board[7][7]!=1) b_total -=20;
     if(board[6][7]==1&&board[7][7]!=1) b_total -=20;
     if(board[7][6]==1&&board[7][7]!=1) b_total -=20;
-
+    //points around à is bad if you didnt get à yet
     if(board[0][1]==2&&board[0][0]!=2) w_total -=20;
     if(board[1][1]==2&&board[0][0]!=2) w_total -=20;
     if(board[1][0]==2&&board[0][0]!=2) w_total -=20;
@@ -262,7 +262,7 @@ public:
     if(board[6][6]==2&&board[7][7]!=2) w_total -=20;
     if(board[6][7]==2&&board[7][7]!=2) w_total -=20;
     if(board[7][6]==2&&board[7][7]!=2) w_total -=20;
-    // subtract white's total from black, let black be the maximizer
+
     if(player==1) return (b_total-w_total);
     else return (w_total-b_total);
 }
@@ -281,7 +281,7 @@ public:
         return valid_spots;
     }
     bool put_disc(Point p) {
-        if(!is_spot_valid(p)) { //叼
+        if(!is_spot_valid(p)) {
             winner = get_next_player(cur_player);
             done = true;
             return false;
@@ -376,30 +376,31 @@ int minimax(int depth, OthelloBoard& board, int alpha, int beta)
 {
     if(depth >=6 || board.done==true)
     {
-        return board.heuristic();
+        return board.heuristic(); //board癸AIΤ祘
     }
 
-    if(depth%2==1)
+    if(depth%2==1) //材(き)糷琌AI匡癸程Τboard (max)
     {
-        int max_eval = -9999999;
+        int max_eval = -9999999; //Τ祘程砞程程沧琌┮ΤchildΤ程
         std::vector<Point> child = board.get_valid_spots();
         std::vector<Point>::iterator it;
         for(it = child.begin();it!=child.end();it++)
         {
             OthelloBoard next_board = board;
             next_board.put_disc(*it);
+
             int eval = minimax(depth+1, next_board, alpha, beta);
 
-            max_eval = std::max(max_eval, eval); //////////????????
-            alpha = std::max(alpha, eval);
+            max_eval = std::max(max_eval, eval);
+            alpha = std::max(alpha, eval);//????????????????
 
             if(beta <= alpha) break;
         }
         return max_eval;
     }
     else
-    { // minimizing layer...
-        int min_eval = 9999999; // set min to worst case
+    {
+        int min_eval = 9999999; //案计糷(寄) 匡程ぃΤAI(min)
         std::vector<Point> child = board.get_valid_spots();
         std::vector<Point>::iterator it;
         for(it = child.begin();it!=child.end();it++)
@@ -408,9 +409,9 @@ int minimax(int depth, OthelloBoard& board, int alpha, int beta)
             next_board.put_disc(*it);
             int eval = minimax(depth+1, next_board, alpha, beta);
             /////////////////???????????????????
-            min_eval = std::min(min_eval, eval); // update min if evaluation is <
+            min_eval = std::min(min_eval, eval);
 
-            // update beta appropriately, and check for eligibility of beta prune
+
             beta = std::min(beta, eval);
             if(beta <= alpha) break;
         }
@@ -424,7 +425,8 @@ std::array<std::array<int, SIZE>, SIZE> board;
 std::vector<Point> next_valid_spots;
 
 
-void read_board(std::ifstream& fin) {
+void read_board(std::ifstream& fin)
+{
     fin >> player;
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -433,7 +435,8 @@ void read_board(std::ifstream& fin) {
     }
 }
 
-void read_valid_spots(std::ifstream& fin) {
+void read_valid_spots(std::ifstream& fin)
+{
     int n_valid_spots;
     fin >> n_valid_spots;
     int x, y;
@@ -443,38 +446,40 @@ void read_valid_spots(std::ifstream& fin) {
     }
 }
 
-void write_valid_spot(std::ofstream& fout) {
+void write_valid_spot(std::ofstream& fout)
+{
     srand(time(NULL));
 
     OthelloBoard Board;
     Board.cur_player = player;
     for(int i = 0;i<8;i++) for(int j = 0;j<8;j++) Board.board[i][j] = board[i][j];
     Point best_point;
-    int ans = -999999999;
+    int ans = -999999999; //箇砞程璶т程 (材糷AI)
     std::vector<Point>::iterator it;
     int alpha = -999999999, beta =  999999999;
     for(it = next_valid_spots.begin();it!=next_valid_spots.end();it++)
     {
         OthelloBoard next_board = Board;
         next_board.put_disc(*it);
+
         int m = 0;
         if(next_board.done == 1)
             m = next_board.heuristic();
-        else m = minimax(2, next_board, alpha, beta);
+        else m = minimax(2, next_board, alpha, beta);//硂board眔程ㄎ秆
 
-        if(m>ans)
+        if(m>ans) //程ㄎ秆>ans   рbest_point砞Θ //alpha pruning ?????????s
         {
             ans = m;
             best_point = *it;
             alpha = m;
         }
     }
-    //if(next_valid_spots)
     fout<<best_point.x<<" "<<best_point.y<<std::endl;
     fout.flush();
 }
 
-int main(int, char** argv) {
+int main(int, char** argv)
+{
     std::ifstream fin(argv[1]);
     std::ofstream fout(argv[2]);
     read_board(fin);
